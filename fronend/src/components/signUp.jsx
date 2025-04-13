@@ -47,58 +47,76 @@ function SignUp() {
   const navigate = useNavigate();
 
   return (
-    <>
-      <h1>{error}</h1>
-      <div className="bg-green-400">
-        already have account
-        <span
-          onClick={() => {
-            navigate("/signIn");
-          }}
-          className=""
+    <div className="h-screen w-full flex flex-col gap-4 justify-center items-center">
+      <div className="bg-neutral-100 p-5 rounded-md w-1/3 max-sm:w-full max-md:w-2/3">
+        <div className="flex flex-col items-start text-3xl font-semibold  mb-5 mt-2">
+          Sign Up
+          <span
+            onClick={() => {
+              navigate("/signIn");
+            }}
+            className="text-black text-xs "
+          >
+            or
+            <span className="text-blue-600 text-xs underline cursor-pointer">
+              Sign in to your account
+            </span>
+          </span>
+        </div>
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col justify-center items-center"
         >
-          SignIn
-        </span>
+          <input
+            type="text"
+            placeholder="Cloudinary Username"
+            onChange={(e) => {
+              setcloudUsername(e.target.value);
+            }}
+            className="w-full h-14 px-5   border border-black rounded-md mt-3 max-sm:h-14 max-sm:w-full"
+          />
+          <input
+            type="text"
+            placeholder="Api Key"
+            onChange={(e) => {
+              setapiKey(e.target.value);
+            }}
+            className="w-full h-14  px-5   border border-black rounded-md  mt-3 "
+          />
+          <input
+            type="text"
+            placeholder="Api Secret"
+            onChange={(e) => {
+              setapiSecret(e.target.value);
+            }}
+            className="w-full h-14  px-5   border border-black rounded-md  mt-3 "
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            onChange={(e) => {
+              setpassword(e.target.value);
+            }}
+            className="w-full h-14 px-5   border border-black rounded-md  mt-3 "
+          />
+          <input
+            type="file"
+            placeholder="Image"
+            onChange={(e) => {
+              setimage(e.target.files[0]);
+            }}
+            className=" w-full h-14  mt-3 "
+          />
+          <button
+            type="submit "
+            className="w-full h-14 px-5   border border-black rounded-md  mt-3 bg-blue-500 text-white "
+          >
+            Sign Up
+          </button>
+        </form>
       </div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="cloudUsername"
-          onChange={(e) => {
-            setcloudUsername(e.target.value);
-          }}
-        />
-        <input
-          type="text"
-          placeholder="Api Key"
-          onChange={(e) => {
-            setapiKey(e.target.value);
-          }}
-        />
-        <input
-          type="text"
-          placeholder="Api Secret"
-          onChange={(e) => {
-            setapiSecret(e.target.value);
-          }}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          onChange={(e) => {
-            setpassword(e.target.value);
-          }}
-        />
-        <input
-          type="file"
-          placeholder="Image"
-          onChange={(e) => {
-            setimage(e.target.files[0]);
-          }}
-        />
-        <button type="submit">Sign Up</button>
-      </form>
-    </>
+      <h1 className="text-red-600">{error}</h1>
+    </div>
   );
 }
 
