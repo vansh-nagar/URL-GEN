@@ -12,7 +12,7 @@ router.route("/login").post(loginUser);
 
 //secured router
 router.route("/uploadFile").post(verifyJwt, upload.single("image"), uploadFile); //make it for multiple images
-router.route("/getLinks").post(verifyJwt, getLinks);
+router.route("/getLinks").get(verifyJwt, getLinks);
 router.route("/deleteLinks").post(verifyJwt, deleteLinks);
 
 export default router;

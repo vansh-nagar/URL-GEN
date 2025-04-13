@@ -13,7 +13,13 @@ app.use(urlencoded({ extended: true, limit: "16kb" }));
 
 app.use(express.static("public"));
 app.use(cookieParser());
-app.use(cors());
+
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Your React frontend
+    credentials: true, // Allow cookies to be sent/received
+  })
+);
 
 DB();
 
