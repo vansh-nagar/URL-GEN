@@ -1,0 +1,22 @@
+import express, { urlencoded } from "express";
+import userRouter from "./routes/user.route.js";
+import dotenv from "dotenv";
+import DB from "./DB/Db.js";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+
+const app = express();
+dotenv.config({ path: "../.env" });
+
+app.use(express.json({ limit: "16kb" }));
+app.use(urlencoded({ extended: true, limit: "16kb" }));
+
+app.use(express.static("public"));
+app.use(cookieParser());
+app.use(cors());
+
+DB();
+
+app.use("/api/v1/users", userRouter);
+
+app.listen(process.env.PORT);
