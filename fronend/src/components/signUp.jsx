@@ -49,13 +49,16 @@ function SignUp() {
   return (
     <>
       <h1>{error}</h1>
-      <div
-        onClick={() => {
-          navigate("/signIn");
-        }}
-      >
-        already have account{" "}
-        <span style={{ color: "blue", cursor: "pointer" }}>SignIn</span>
+      <div className="bg-green-400">
+        already have account
+        <span
+          onClick={() => {
+            navigate("/signIn");
+          }}
+          className=""
+        >
+          SignIn
+        </span>
       </div>
       <form onSubmit={handleSubmit}>
         <input
