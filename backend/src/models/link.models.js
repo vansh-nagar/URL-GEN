@@ -22,6 +22,10 @@ const linkSchema = new mongoose.Schema(
     copyCount: {
       type: Number,
     },
+    publicId: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

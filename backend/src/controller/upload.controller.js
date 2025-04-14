@@ -23,6 +23,7 @@ const uploadFile = asyncHandler(async (req, res) => {
     fileName: cloudinaryRes.original_filename,
     type: cloudinaryRes.resource_type,
     copyCount: 0,
+    publicId: cloudinaryRes.public_id,
   });
 
   if (!createdLink) {

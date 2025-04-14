@@ -75,9 +75,32 @@ const Home = () => {
     }
   };
 
+  const handleDeleteButton = (publicId) => {
+    axios
+      .post(
+        "http://localhost:3000/api/v1/users/deleteLinks",
+        {
+          publicId,
+        },
+        { withCredentials: true }
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          handleGetLinks();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleCopyLink = (link) => {
+    navigator.clipboard.writeText(link);
+  };
+
   return (
-    <div className="flex flex-row w-full h-screen">
-      <div className="w-2/5 border flex justify-center items-center flex-col">
+    <div className="flex max-sm:flex-col flex-row w-full h-screen ">
+      <div className="w-2/5 max-sm:w-full border flex justify-center items-center flex-col ">
         <form
           onSubmit={handleFileSubmit}
           className="flex flex-col justify-center items-center"
@@ -87,7 +110,7 @@ const Home = () => {
             onChange={(e) => {
               setimage(e.target.files[0]);
             }}
-            className="h-96 w-96 border"
+            className="h-96 w-96 border bg-neutral-100 rounded-md border-r-pink-600 border-t-teal-600 border-b-blue-500 border-l-lime-400"
           />
           <button
             type="submit"
@@ -99,27 +122,8 @@ const Home = () => {
         <h1 className="text-red-600">{messsage}</h1>
       </div>
 
-      {/* <div className="w-1/2">
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          {links.map((e, index) => (
-            <img
-              style={{ width: "30px" }}
-              key={index}
-              src={`${e.link}`}
-              alt=""
-            />
-          ))}
-        </div>
-      </div> */}
-
-      <div className="flex w-3/5  justify-center items-center p-16 ">
-        <div className="bg-neutral-100 rounded-md p-5 h-full w-full">
+      <div className="flex  w-3/5  justify-center items-center p-16 max-sm:w-full max-sm:p-2">
+        <div className=" bg-neutral-100 rounded-md p-5 h-full w-full">
           <div className="flex flex-row items-center justify-between border-b-2 border-gray-400 pb-5">
             <div className="flex flex-row items-center">
               <div className="mr-5 font-semibold">Links</div>
@@ -148,7 +152,10 @@ const Home = () => {
           <div className="my-5 ">
             {/*component*/}
             {links.map((e, index) => (
-              <div className="flex  relative justify-between items-center  bg-neutral-300 py-[5px] rounded-md  shadow-xl mt-3 ">
+              <div
+                key={index}
+                className="flex  relative justify-between items-center  bg-neutral-300 py-[5px] rounded-md  shadow-xl mt-3 "
+              >
                 <div
                   className="flex justify-center items-center 
               "
@@ -171,8 +178,20 @@ const Home = () => {
                 </div>
                 {/**/}
                 <div className="flex justify-center items-center flex-row mr-6">
-                  <RiDeleteBin6Line size={25} className="mr-6 cursor-pointer" />
-                  <RiFileCopyLine size={25} className="cursor-pointer" />
+                  <RiDeleteBin6Line
+                    size={25}
+                    className="mr-6 cursor-pointer  hover:text-neutral-600 active:text-neutral-950 transition-all duration-100"
+                    onClick={() => {
+                      handleDeleteButton(e.publicId);
+                    }}
+                  />
+                  <RiFileCopyLine
+                    size={25}
+                    className="cursor-pointer  hover:text-neutral-600 active:text-neutral-950"
+                    onClick={() => {
+                      handleCopyLink(e.link);
+                    }}
+                  />
                 </div>
               </div>
             ))}
