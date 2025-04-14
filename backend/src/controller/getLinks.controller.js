@@ -11,6 +11,7 @@ const getLinks = asyncHandler(async (req, res) => {
   const Links = await Link.find({ owner: req.user.CloudUsername });
   res.status(200).send(Links);
 });
+
 const deleteLinks = asyncHandler(async (req, res) => {
   // get the ppublic id from body
   const { publicId } = req.body;
@@ -48,4 +49,33 @@ const deleteLinks = asyncHandler(async (req, res) => {
   // send response
 });
 
-export { getLinks, deleteLinks };
+const copyLinks = asyncHandler(async (req, res) => {
+  const { publicId } = req.body;
+
+  // public id verification
+
+  if (publicId.trim() === "") {
+    throw new ApiError(400, " need valid publcId to delete from cloud");
+  }
+
+  const foundLink = await Link.findOneAndUpdate(
+    { publicId },
+    { $inc: { copyCount: 1 } },
+    { new: true }
+  );
+  if (!foundLink) {
+    throw new ApiError(500, "Link don't existes");
+  }
+
+  res
+    .status(200)
+    .send(
+      new apiResponse(
+        200,
+        `copied ${foundLink.fileName} : ${foundLink.copyCount} times`,
+        foundLink
+      )
+    );
+});
+
+export { getLinks, deleteLinks, copyLinks };

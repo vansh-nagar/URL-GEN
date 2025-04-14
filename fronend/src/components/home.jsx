@@ -6,14 +6,34 @@ import {
   RiArrowDownSLine,
   RiDeleteBin6Line,
   RiFileCopyLine,
+  RiUploadCloud2Line,
 } from "@remixicon/react";
 
 const Home = () => {
   const [image, setimage] = useState(null);
   const [messsage, setmesssage] = useState("");
   const [links, setlinks] = useState([]);
+  const [linkMessage, setlinkMessage] = useState("");
+  const [isDragging, setIsDragging] = useState(false);
 
   const [toggleImage, settoggleImage] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState(null);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setlinkMessage("");
+    }, 3000);
+  }, [linkMessage]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setmesssage("");
+    }, 3000);
+  }, [messsage]);
+
+  useEffect(() => {
+    handleGetLinks();
+  }, []);
 
   const handleGetLinks = () => {
     axios
@@ -21,17 +41,12 @@ const Home = () => {
         withCredentials: true,
       })
       .then((response) => {
-        console.log(response);
         setlinks(response.data);
       })
       .catch((err) => {
         console.log(err);
       });
   };
-
-  useEffect(() => {
-    handleGetLinks();
-  }, []);
 
   const handleFileSubmit = (e) => {
     e.preventDefault();
@@ -45,10 +60,10 @@ const Home = () => {
         withCredentials: true, //let  server send / read cookies from frontend
       })
       .then((response) => {
-        console.log(response.data.message);
         setmesssage(response.data.message);
         if (response.status === 200) {
           handleGetLinks();
+          setPreviewUrl(null);
         }
       })
       .catch((err) => {
@@ -85,6 +100,8 @@ const Home = () => {
         { withCredentials: true }
       )
       .then((response) => {
+        setlinkMessage(response.data.message);
+
         if (response.status === 200) {
           handleGetLinks();
         }
@@ -94,8 +111,57 @@ const Home = () => {
       });
   };
 
-  const handleCopyLink = (link) => {
+  const handleCopyLink = (link, publicId) => {
     navigator.clipboard.writeText(link);
+
+    axios
+      .post(
+        "http://localhost:3000/api/v1/users/copyLinks",
+        {
+          publicId,
+        },
+        { withCredentials: true }
+      )
+      .then((response) => {
+        setlinkMessage(response.data.message);
+
+        if (response.status === 200) {
+          handleGetLinks();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  {
+    /** */
+  }
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setimage(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      setimage(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
   };
 
   return (
@@ -105,16 +171,40 @@ const Home = () => {
           onSubmit={handleFileSubmit}
           className="flex flex-col justify-center items-center"
         >
-          <input
-            type="file"
-            onChange={(e) => {
-              setimage(e.target.files[0]);
-            }}
-            className="h-96 w-96 border bg-neutral-100 rounded-md border-r-pink-600 border-t-teal-600 border-b-blue-500 border-l-lime-400"
-          />
+          <div className="flex flex-col items-center gap-4">
+            <input
+              type="file"
+              id="fileUpload"
+              onChange={handleFileChange}
+              className="hidden"
+              accept="image/*"
+            />
+
+            <label
+              htmlFor="fileUpload"
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              className={`h-80 w-96 border-4 ${
+                isDragging ? "border-gray-500 bg-gray-200" : ""
+              } border-dotted rounded-xl flex justify-center items-center
+        bg-neutral-100 border-r-pink-600 border-t-teal-600 border-b-blue-500 border-l-lime-400
+        hover:border-gray-500 hover:bg-gray-100 transition-all cursor-pointer overflow-hidden`}
+            >
+              {previewUrl ? (
+                <img
+                  src={previewUrl}
+                  alt="Preview"
+                  className="h-full w-full object-cover rounded-xl"
+                />
+              ) : (
+                <RiUploadCloud2Line size={80} className="text-gray-400" />
+              )}
+            </label>
+          </div>
           <button
             type="submit"
-            className="w-full h-14 px-5  mt-10 border border-black rounded-md   bg-blue-500 text-white "
+            className="w-full h-14 px-5  mt-10 border border-black rounded-md   bg-blue-500 text-white hover:bg-blue-400 active:bg-blue-600 "
           >
             Upload
           </button>
@@ -122,7 +212,7 @@ const Home = () => {
         <h1 className="text-red-600">{messsage}</h1>
       </div>
 
-      <div className="flex  w-3/5  justify-center items-center p-16 max-sm:w-full max-sm:p-2">
+      <div className="flex flex-col w-3/5  justify-center items-center p-16 max-sm:w-full max-sm:p-2">
         <div className=" bg-neutral-100 rounded-md p-5 h-full w-full">
           <div className="flex flex-row items-center justify-between border-b-2 border-gray-400 pb-5">
             <div className="flex flex-row items-center">
@@ -189,7 +279,7 @@ const Home = () => {
                     size={25}
                     className="cursor-pointer  hover:text-neutral-600 active:text-neutral-950"
                     onClick={() => {
-                      handleCopyLink(e.link);
+                      handleCopyLink(e.link, e.publicId);
                     }}
                   />
                 </div>
@@ -197,6 +287,7 @@ const Home = () => {
             ))}
           </div>
         </div>
+        <div className="text-red-600">{linkMessage}</div>
       </div>
     </div>
   );
