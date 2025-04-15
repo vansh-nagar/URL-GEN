@@ -64,6 +64,7 @@ const Home = () => {
         if (response.status === 200) {
           handleGetLinks();
           setPreviewUrl(null);
+          setimage(null);
         }
       })
       .catch((err) => {
@@ -76,17 +77,20 @@ const Home = () => {
 
   const handleImageToggle = (e) => {
     if (toggleImage) {
-      console.log((e.target.style.position = ""));
-      console.log((e.target.style.width = "56px"));
-      console.log((e.target.style.height = "56px"));
-      console.log((e.target.style.zIndex = "1"));
+      e.target.style.position = "";
+      e.target.style.width = "56px";
+      e.target.style.height = "56px";
+      e.target.style.objectFit = "cover";
+
+      e.target.style.zIndex = "1";
     } else {
-      console.log((e.target.style.position = "absolute"));
-      console.log((e.target.style.width = "300px"));
-      console.log((e.target.style.height = "300px"));
-      console.log((e.target.style.top = "0"));
-      console.log((e.target.style.left = "-100px"));
-      console.log((e.target.style.zIndex = "100"));
+      e.target.style.position = "absolute";
+      e.target.style.objectFit = "contain";
+      e.target.style.width = "400px";
+      e.target.style.height = "400px";
+      e.target.style.top = "5px";
+      e.target.style.left = "-0";
+      e.target.style.zIndex = "100";
     }
   };
 
@@ -163,20 +167,28 @@ const Home = () => {
   const handleDragLeave = () => {
     setIsDragging(false);
   };
+  {
+    /** */
+  }
+
+  const toggleDarkmode = () => {
+    const body = document.body;
+    body.classList.toggle("dark");
+  };
 
   return (
-    <div className="flex max-sm:flex-col flex-row w-full h-screen ">
-      <div className="w-2/5 max-sm:w-full border flex justify-center items-center flex-col ">
+    <div className="flex max-sm:flex-col flex-row w-full h-screen dark:bg-neutral-500">
+      <div className="w-2/5 max-sm:w-full  flex justify-center items-center flex-col ">
         <form
           onSubmit={handleFileSubmit}
           className="flex flex-col justify-center items-center"
         >
-          <div className="flex flex-col items-center gap-4">
+          <div className="flex flex-col items-center gap-4 ">
             <input
               type="file"
               id="fileUpload"
               onChange={handleFileChange}
-              className="hidden"
+              className="hidden "
               accept="image/*"
             />
 
@@ -185,7 +197,7 @@ const Home = () => {
               onDrop={handleDrop}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
-              className={`h-80 w-96 border-4 ${
+              className={`h-80 w-96 border-4 dark:bg-black ${
                 isDragging ? "border-gray-500 bg-gray-200" : ""
               } border-dotted rounded-xl flex justify-center items-center
         bg-neutral-100 border-r-pink-600 border-t-teal-600 border-b-blue-500 border-l-lime-400
@@ -198,25 +210,28 @@ const Home = () => {
                   className="h-full w-full object-cover rounded-xl"
                 />
               ) : (
-                <RiUploadCloud2Line size={80} className="text-gray-400" />
+                <RiUploadCloud2Line
+                  size={80}
+                  className="text-gray-400  dark:text-white"
+                />
               )}
             </label>
           </div>
           <button
             type="submit"
-            className="w-full h-14 px-5  mt-10 border border-black rounded-md   bg-blue-500 text-white hover:bg-blue-400 active:bg-blue-600 "
+            className="w-full h-14 px-5  mt-10 border border-black rounded-md   bg-blue-500 text-white hover:bg-blue-400 active:bg-blue-600 dark:bg-neutral-300 dark:text-black"
           >
             Upload
           </button>
         </form>
-        <h1 className="text-red-600">{messsage}</h1>
+        <h1 className="text-red-600 dark:text-white">{messsage}</h1>
       </div>
 
       <div className="flex flex-col w-3/5  justify-center items-center p-16 max-sm:w-full max-sm:p-2">
-        <div className=" bg-neutral-100 rounded-md p-5 h-full w-full">
+        <div className=" bg-neutral-100 dark:bg-neutral-600 rounded-md p-5 h-full w-full overflow-hidden">
           <div className="flex flex-row items-center justify-between border-b-2 border-gray-400 pb-5">
             <div className="flex flex-row items-center">
-              <div className="mr-5 font-semibold">Links</div>
+              <div className="mr-5 font-semibold dark:text-white">Links</div>
               <div className="relative">
                 <div className="absolute right-4 top-3 pointer-events-none">
                   <RiArrowDownSLine
@@ -236,24 +251,29 @@ const Home = () => {
                 </select>
               </div>
             </div>
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              onClick={toggleDarkmode}
+              className="relative w-12 h-6 bg-gray-300 dark:bg-neutral-400 rounded-full appearance-none cursor-pointer transition duration-300 
+             before:content-[''] before:absolute before:top-0.5 before:left-0.5 before:w-5 before:h-5 before:bg-white before:rounded-full 
+             before:transition-transform before:duration-300 checked:before:translate-x-6"
+            />
           </div>
-          {/**/}
-          <div className="my-5 ">
+          <div className="hide-scrollbar my-5 mb-5 overflow-y-auto h-[85%]  pb-[1000px] ">
             {/*component*/}
             {links.map((e, index) => (
               <div
                 key={index}
-                className="flex  relative justify-between items-center  bg-neutral-300 py-[5px] rounded-md  shadow-xl mt-3 "
+                className="flex  relative justify-between items-center  bg-neutral-300 py-[5px] rounded-md  shadow  dark:shadow mt-3 "
               >
                 <div
-                  className="flex justify-center items-center 
+                  className="flex justify-center items-center overflow-hidden
               "
                 >
                   <img
                     src={`${e.link}`}
                     alt=""
-                    className="w-14 h-14 object-cover ml-[5px] rounded-md shadow-2xl cursor-pointer"
+                    className="w-14 h-14 object-cover ml-[5px] rounded-md shadow-2xl cursor-pointer backdrop-blur-sm"
                     onMouseEnter={(e) => {
                       settoggleImage(true);
                       handleImageToggle(e);
@@ -264,10 +284,12 @@ const Home = () => {
                     }}
                   />
 
-                  <div className="m-4">{e.fileName}</div>
+                  <div className="m-4 whitespace-nowrap overflow-hidden text-ellipsis ">
+                    {e.fileName}
+                  </div>
                 </div>
                 {/**/}
-                <div className="flex justify-center items-center flex-row mr-6">
+                <div className="flex justify-center items-center flex-row mr-6 ">
                   <RiDeleteBin6Line
                     size={25}
                     className="mr-6 cursor-pointer  hover:text-neutral-600 active:text-neutral-950 transition-all duration-100"

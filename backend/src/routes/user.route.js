@@ -1,5 +1,9 @@
 import { Router } from "express";
-import { registerUser, loginUser } from "../controller/register.controller.js";
+import {
+  registerUser,
+  loginUser,
+  changePassword,
+} from "../controller/register.controller.js";
 import { upload } from "../middleware/multer.middleware.js";
 import { verifyJwt } from "../utils/jwt.vertify.js";
 import { uploadFile } from "../controller/upload.controller.js";
@@ -19,5 +23,6 @@ router.route("/uploadFile").post(verifyJwt, upload.single("image"), uploadFile);
 router.route("/getLinks").get(verifyJwt, getLinks);
 router.route("/deleteLinks").post(verifyJwt, deleteLinks);
 router.route("/copyLinks").post(verifyJwt, copyLinks);
+router.route("/changePassword").post(verifyJwt, changePassword);
 
 export default router;

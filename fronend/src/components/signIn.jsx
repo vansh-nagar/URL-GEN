@@ -5,9 +5,14 @@ import axios from "axios";
 const SignIn = () => {
   const [CloudUsername, setCloudUsername] = useState("");
   const [password, setpassword] = useState("");
-  const [errResp, seterrRresp] = useState("second");
+  const [errResp, seterrRresp] = useState("");
 
   const navigate = useNavigate();
+
+  const handleForgetPassword = () => {
+    navigate("/forgetPassword");
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
@@ -75,6 +80,12 @@ const SignIn = () => {
           >
             LogIn
           </button>
+          <div
+            onClick={handleForgetPassword}
+            className="mt-3 text-blue-600 cursor-pointer "
+          >
+            Change Password
+          </div>
         </form>
       </div>
       <div className="text-red-600">{errResp}</div>

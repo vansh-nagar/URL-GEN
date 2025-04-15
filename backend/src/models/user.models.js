@@ -40,8 +40,8 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-userSchema.methods.comparePassword = function (plainPassword) {
-  return bcrypt.compare(plainPassword, this.password);
+userSchema.methods.comparePassword = async function (plainPassword) {
+  return await bcrypt.compare(plainPassword, this.password);
 };
 
 userSchema.methods.generateAccesToken = function () {

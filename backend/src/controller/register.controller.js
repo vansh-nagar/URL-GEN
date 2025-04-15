@@ -130,4 +130,40 @@ const loginUser = asyncHandler(async (req, res) => {
     );
 });
 
-export { registerUser, loginUser };
+const changePassword = asyncHandler(async (req, res) => {
+  // get new old pass
+  const { oldPassword, newPassword, confirmPassword } = req.body;
+
+  if (
+    [oldPassword, newPassword, confirmPassword].some((e) => {
+      return e.trim() === "";
+    })
+  ) {
+    throw new ApiError(400, "all fields are required");
+  }
+  //cheak if the password matches the db password
+
+  const foundUser = await User.findById(req.user._id);
+
+  const comparePasswordResult = await foundUser.comparePassword(oldPassword);
+
+  if (!comparePasswordResult) {
+    throw new ApiError(400, "password does not match the old password");
+  }
+
+  //check both password are same
+  if (newPassword !== confirmPassword) {
+    throw new ApiError(400, "password does not match");
+  }
+
+  //if both new pass are same then change password
+  foundUser.password = newPassword;
+  await foundUser.save();
+
+  res
+    .status(200)
+    .json(
+      new apiResponse(200, "password changed successfully", foundUser.password)
+    );
+});
+export { registerUser, loginUser, changePassword };
