@@ -13,8 +13,18 @@ const ForgetPassword = () => {
   const [newPassword, setnewPassword] = useState("");
   const [confirmPassword, setconfirmPassword] = useState("");
   const [messsage, setmesssage] = useState("");
+  const [isLoading, setisLoading] = useState(false);
+
+  if (isLoading) {
+    return (
+      <div className="spinner-wrapper">
+        <div className="spinner"></div>
+      </div>
+    );
+  }
 
   const handleSubmit = (e) => {
+    setisLoading(true);
     e.preventDefault();
     axios
       .post(
@@ -32,12 +42,14 @@ const ForgetPassword = () => {
         console.log(response.data.message);
         if (response.data.status === 200) {
           navigator("/signIn");
+          setisLoading(false);
         }
         setmesssage(response.data.message);
       })
       .catch((err) => {
         console.log(err.response.data.message);
         setmesssage(err.response.data.message);
+        setisLoading(false);
       });
   };
 

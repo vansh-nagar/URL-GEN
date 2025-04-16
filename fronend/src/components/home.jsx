@@ -18,6 +18,7 @@ const Home = () => {
 
   const [toggleImage, settoggleImage] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(null);
+  const [isLoading, setisLoading] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -34,6 +35,14 @@ const Home = () => {
   useEffect(() => {
     handleGetLinks();
   }, []);
+
+  if (isLoading) {
+    return (
+      <div className="spinner-wrapper">
+        <div className="spinner"></div>
+      </div>
+    );
+  }
 
   const handleGetLinks = () => {
     axios
@@ -54,6 +63,8 @@ const Home = () => {
 
     formdata.append("image", image);
 
+    setisLoading(true);
+
     axios
       .post("http://localhost:3000/api/v1/users/uploadFile", formdata, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -65,12 +76,14 @@ const Home = () => {
           handleGetLinks();
           setPreviewUrl(null);
           setimage(null);
+          setisLoading(false);
         }
       })
       .catch((err) => {
         console.log(err.response.data);
         if (!err.response.data.sucess) {
           setmesssage("file is required");
+          setisLoading(false);
         }
       });
   };
@@ -128,10 +141,6 @@ const Home = () => {
       )
       .then((response) => {
         setlinkMessage(response.data.message);
-
-        if (response.status === 200) {
-          handleGetLinks();
-        }
       })
       .catch((err) => {
         console.log(err);
@@ -174,6 +183,23 @@ const Home = () => {
   const toggleDarkmode = () => {
     const body = document.body;
     body.classList.toggle("dark");
+  };
+
+  const handleFilter = (e) => {
+    console.log(e.target.value);
+    axios
+      .get(
+        `http://localhost:4000/api/v1/users/getFilterData/${e.target.value}`,
+        { withCredentials: true }
+      )
+      .then((response) => {
+        if (response.data.status === 200) {
+          setlinks(response.data.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
 
   return (
@@ -241,10 +267,13 @@ const Home = () => {
                 <select
                   name=""
                   id=""
-                  className="appearance-none   rounded-md py-3 pl-6  "
+                  className="appearance-none w-[200px]   rounded-md py-3 pl-6  "
+                  onChange={(e) => {
+                    handleFilter(e);
+                  }}
                 >
                   <option value="">Filter</option>
-                  <option value="RecentlyCreated">Recently Created</option>
+                  <option value="RecentlyCreated">recently Created</option>
                   <option value="mostUsed">most Used</option>
                   <option value="image">image</option>
                   <option value="video">video</option>

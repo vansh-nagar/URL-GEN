@@ -11,8 +11,20 @@ function SignUp() {
   const [image, setimage] = useState(null);
 
   const [error, seterror] = useState("");
+  const [isLoading, setisLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  if (isLoading) {
+    return (
+      <div className="spinner-wrapper">
+        <div className="spinner"></div>
+      </div>
+    );
+  }
 
   const handleSubmit = (e) => {
+    setisLoading(true);
     console.log("Form submitted"); // ✅ Add this
 
     e.preventDefault();
@@ -37,14 +49,15 @@ function SignUp() {
         seterror(response.data.message);
         if (response.data.status === 200) {
           navigate("/Home");
+          setisLoading(false);
         }
       })
       .catch((err) => {
         console.log(err.response.data);
         seterror(err.response.data.message);
+        setisLoading(false);
       });
   };
-  const navigate = useNavigate();
 
   return (
     <div className="h-screen w-full flex flex-col gap-4 justify-center items-center">

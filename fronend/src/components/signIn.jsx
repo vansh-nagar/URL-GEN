@@ -6,14 +6,25 @@ const SignIn = () => {
   const [CloudUsername, setCloudUsername] = useState("");
   const [password, setpassword] = useState("");
   const [errResp, seterrRresp] = useState("");
+  const [isLoading, setisLoading] = useState(false);
 
   const navigate = useNavigate();
+
+  if (isLoading) {
+    return (
+      <div className="spinner-wrapper">
+        <div className="spinner"></div>
+      </div>
+    );
+  }
 
   const handleForgetPassword = () => {
     navigate("/forgetPassword");
   };
 
   const handleSubmit = (e) => {
+    setisLoading(true);
+
     e.preventDefault();
     axios
       .post(
@@ -28,10 +39,12 @@ const SignIn = () => {
         console.log(response);
         seterrRresp(response.data.message);
         if (response.data.status === 200) {
+          setisLoading(false);
           navigate("/Home");
         }
       })
       .catch((err) => {
+        setisLoading(false);
         console.log(err);
         seterrRresp(err.response.data.message);
       });

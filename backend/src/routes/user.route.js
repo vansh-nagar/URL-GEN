@@ -12,6 +12,7 @@ import {
   deleteLinks,
   copyLinks,
 } from "../controller/getLinks.controller.js";
+import { getFilterData } from "../controller/getData.controller.js";
 
 const router = Router();
 
@@ -24,5 +25,7 @@ router.route("/getLinks").get(verifyJwt, getLinks);
 router.route("/deleteLinks").post(verifyJwt, deleteLinks);
 router.route("/copyLinks").post(verifyJwt, copyLinks);
 router.route("/changePassword").post(verifyJwt, changePassword);
+
+router.route("/getFilterData/:filter").get(verifyJwt, getFilterData);
 
 export default router;
