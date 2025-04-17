@@ -39,7 +39,7 @@ function SignUp() {
     formData.append("image", image);
 
     axios // ading normal json
-      .post("http://localhost:3000/api/v1/users/register", formData, {
+      .post("https://url-gen-1.onrender.com/api/v1/users/register", formData, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true, //required to receive and send cookies
         //headers tell server content is multipart/form-data not normal json - for image upload

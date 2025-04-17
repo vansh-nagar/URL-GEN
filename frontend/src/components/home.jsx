@@ -46,7 +46,7 @@ const Home = () => {
 
   const handleGetLinks = () => {
     axios
-      .get("http://localhost:3000/api/v1/users/getLinks", {
+      .get("https://url-gen-1.onrender.com/api/v1/users/getLinks", {
         withCredentials: true,
       })
       .then((response) => {
@@ -66,10 +66,14 @@ const Home = () => {
     setisLoading(true);
 
     axios
-      .post("http://localhost:3000/api/v1/users/uploadFile", formdata, {
-        headers: { "Content-Type": "multipart/form-data" },
-        withCredentials: true, //let  server send / read cookies from frontend
-      })
+      .post(
+        "https://url-gen-1.onrender.com/api/v1/users/uploadFile",
+        formdata,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true, //let  server send / read cookies from frontend
+        }
+      )
       .then((response) => {
         setmesssage(response.data.message);
         if (response.status === 200) {
@@ -110,7 +114,7 @@ const Home = () => {
   const handleDeleteButton = (publicId) => {
     axios
       .post(
-        "http://localhost:3000/api/v1/users/deleteLinks",
+        "https://url-gen-1.onrender.com/api/v1/users/deleteLinks",
         {
           publicId,
         },
@@ -133,7 +137,7 @@ const Home = () => {
 
     axios
       .post(
-        "http://localhost:3000/api/v1/users/copyLinks",
+        "https://url-gen-1.onrender.com/api/v1/users/copyLinks",
         {
           publicId,
         },
@@ -189,7 +193,7 @@ const Home = () => {
     console.log(e.target.value);
     axios
       .get(
-        `http://localhost:4000/api/v1/users/getFilterData/${e.target.value}`,
+        `https://url-gen-1.onrender.com/api/v1/users/getFilterData/${e.target.value}`,
         { withCredentials: true }
       )
       .then((response) => {
