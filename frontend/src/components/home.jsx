@@ -38,7 +38,7 @@ const Home = () => {
 
   if (isLoading) {
     return (
-      <div className="spinner-wrapper">
+      <div className="spinner-wrapper dark:bg-black">
         <div className="spinner"></div>
       </div>
     );
