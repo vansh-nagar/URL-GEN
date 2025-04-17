@@ -80,7 +80,7 @@ const Home = () => {
         }
       })
       .catch((err) => {
-        console.log(err.response.data);
+        console.log(err);
         if (!err.response.data.sucess) {
           setmesssage("file is required");
           setisLoading(false);
