@@ -28,7 +28,7 @@ const SignIn = () => {
     e.preventDefault();
     axios
       .post(
-        "http://localhost:3000/api/v1/users/login",
+        "/api/v1/users/login",
         {
           CloudUsername,
           password,

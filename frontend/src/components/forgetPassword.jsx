@@ -28,7 +28,7 @@ const ForgetPassword = () => {
     e.preventDefault();
     axios
       .post(
-        "http://localhost:3000/api/v1/users/changePassword",
+        "/api/v1/users/changePassword",
         {
           oldPassword,
           newPassword,
