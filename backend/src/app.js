@@ -16,7 +16,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // Your React frontend
+    origin: "https://url-gen-a82n.onrender.com/", // Your React frontend
     credentials: true, // Allow cookies to be sent/received
   })
 );
