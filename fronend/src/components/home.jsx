@@ -46,7 +46,7 @@ const Home = () => {
 
   const handleGetLinks = () => {
     axios
-      .get("/api/v1/users/getLinks", {
+      .get("http://localhost:3000/api/v1/users/getLinks", {
         withCredentials: true,
       })
       .then((response) => {
@@ -66,7 +66,7 @@ const Home = () => {
     setisLoading(true);
 
     axios
-      .post("/api/v1/users/uploadFile", formdata, {
+      .post("http://localhost:3000/api/v1/users/uploadFile", formdata, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true, //let  server send / read cookies from frontend
       })
@@ -110,7 +110,7 @@ const Home = () => {
   const handleDeleteButton = (publicId) => {
     axios
       .post(
-        "/api/v1/users/deleteLinks",
+        "http://localhost:3000/api/v1/users/deleteLinks",
         {
           publicId,
         },
@@ -133,7 +133,7 @@ const Home = () => {
 
     axios
       .post(
-        "/api/v1/users/copyLinks",
+        "http://localhost:3000/api/v1/users/copyLinks",
         {
           publicId,
         },
@@ -188,9 +188,10 @@ const Home = () => {
   const handleFilter = (e) => {
     console.log(e.target.value);
     axios
-      .get(`/api/v1/users/getFilterData/${e.target.value}`, {
-        withCredentials: true,
-      })
+      .get(
+        `http://localhost:4000/api/v1/users/getFilterData/${e.target.value}`,
+        { withCredentials: true }
+      )
       .then((response) => {
         if (response.data.status === 200) {
           setlinks(response.data.data);
