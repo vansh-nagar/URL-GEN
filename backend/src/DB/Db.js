@@ -8,7 +8,7 @@ const DB = async () => {
     );
 
     console.log(
-      `connected to mongoDB successfully || DB host ${mongoDbInstance.connection.host} `
+      `connected to mongoDB successfully || DB host ${mongoDbInstance.connection.host}  , ${process.env.PORT}`
     );
   } catch (err) {
     console.log(err.message);

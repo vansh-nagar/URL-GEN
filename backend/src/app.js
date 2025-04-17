@@ -14,9 +14,11 @@ app.use(urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 app.use(cookieParser());
 
+const frontendUrl = process.env.FRONTEND_URL;
+
 app.use(
   cors({
-    origin: `${process.env.FRONTEND_URL}`, // Your React frontend
+    origin: frontendUrl, // Your React frontend
     credentials: true, // Allow cookies to be sent/received
   })
 );
