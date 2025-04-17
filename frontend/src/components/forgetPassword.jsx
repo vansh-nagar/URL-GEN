@@ -14,6 +14,7 @@ const ForgetPassword = () => {
   const [confirmPassword, setconfirmPassword] = useState("");
   const [messsage, setmesssage] = useState("");
   const [isLoading, setisLoading] = useState(false);
+  const apiURL = import.meta.env.VITE_BACKEND_URL;
 
   if (isLoading) {
     return (
@@ -28,7 +29,7 @@ const ForgetPassword = () => {
     e.preventDefault();
     axios
       .post(
-        "https://url-gen-1.onrender.com/api/v1/users/changePassword",
+        `${apiURL}/api/v1/users/changePassword`,
         {
           oldPassword,
           newPassword,

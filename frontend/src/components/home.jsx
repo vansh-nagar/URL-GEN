@@ -19,6 +19,7 @@ const Home = () => {
   const [toggleImage, settoggleImage] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [isLoading, setisLoading] = useState(false);
+  const apiURL = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     setTimeout(() => {
@@ -38,7 +39,7 @@ const Home = () => {
 
   if (isLoading) {
     return (
-      <div className="spinner-wrapper dark:bg-black">
+      <div className="spinner-wrapper">
         <div className="spinner"></div>
       </div>
     );
@@ -46,7 +47,7 @@ const Home = () => {
 
   const handleGetLinks = () => {
     axios
-      .get("https://url-gen-1.onrender.com/api/v1/users/getLinks", {
+      .get(`${apiURL}/api/v1/users/getLinks`, {
         withCredentials: true,
       })
       .then((response) => {
@@ -66,14 +67,10 @@ const Home = () => {
     setisLoading(true);
 
     axios
-      .post(
-        "https://url-gen-1.onrender.com/api/v1/users/uploadFile",
-        formdata,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-          withCredentials: true, //let  server send / read cookies from frontend
-        }
-      )
+      .post(`${apiURL}/api/v1/users/uploadFile`, formdata, {
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true, //let  server send / read cookies from frontend
+      })
       .then((response) => {
         setmesssage(response.data.message);
         if (response.status === 200) {
@@ -114,7 +111,7 @@ const Home = () => {
   const handleDeleteButton = (publicId) => {
     axios
       .post(
-        "https://url-gen-1.onrender.com/api/v1/users/deleteLinks",
+        `${apiURL}/api/v1/users/deleteLinks`,
         {
           publicId,
         },
@@ -137,7 +134,7 @@ const Home = () => {
 
     axios
       .post(
-        "https://url-gen-1.onrender.com/api/v1/users/copyLinks",
+        `${apiURL}/api/v1/users/copyLinks`,
         {
           publicId,
         },
@@ -192,10 +189,9 @@ const Home = () => {
   const handleFilter = (e) => {
     console.log(e.target.value);
     axios
-      .get(
-        `https://url-gen-1.onrender.com/api/v1/users/getFilterData/${e.target.value}`,
-        { withCredentials: true }
-      )
+      .get(`${apiURL}/api/v1/users/getFilterData/${e.target.value}`, {
+        withCredentials: true,
+      })
       .then((response) => {
         if (response.data.status === 200) {
           setlinks(response.data.data);

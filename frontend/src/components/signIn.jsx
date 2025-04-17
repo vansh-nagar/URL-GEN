@@ -7,6 +7,7 @@ const SignIn = () => {
   const [password, setpassword] = useState("");
   const [errResp, seterrRresp] = useState("");
   const [isLoading, setisLoading] = useState(false);
+  const apiURL = import.meta.env.VITE_BACKEND_URL;
 
   const navigate = useNavigate();
 
@@ -28,7 +29,7 @@ const SignIn = () => {
     e.preventDefault();
     axios
       .post(
-        "https://url-gen-1.onrender.com/api/v1/users/login",
+        `${apiURL}/api/v1/users/login`,
         {
           CloudUsername,
           password,
