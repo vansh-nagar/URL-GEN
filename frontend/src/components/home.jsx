@@ -203,13 +203,13 @@ const Home = () => {
   };
 
   return (
-    <div className="flex max-sm:flex-col flex-row w-full h-screen dark:bg-neutral-500">
-      <div className="w-2/5 max-sm:w-full  flex justify-center items-center flex-col ">
+    <div className="flex max-sm:flex-col flex-row w-full h-screen  dark:bg-neutral-500 max-sm:rounded-b-md">
+      <div className="w-2/5 max-sm:w-full flex justify-center items-center flex-col">
         <form
           onSubmit={handleFileSubmit}
-          className="flex flex-col justify-center items-center"
+          className="flex flex-col justify-center items-center max-sm:w-[95%] max-sm:h-screen"
         >
-          <div className="flex flex-col items-center gap-4 ">
+          <div className="flex flex-col items-center gap-4 mt-5 max-sm:w-full">
             <input
               type="file"
               id="fileUpload"
@@ -223,7 +223,7 @@ const Home = () => {
               onDrop={handleDrop}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
-              className={`h-80 w-96 border-4 dark:bg-black ${
+              className={`h-80 w-96 max-sm:w-full  border-4 dark:bg-black ${
                 isDragging ? "border-gray-500 bg-gray-200" : ""
               } border-dotted rounded-xl flex justify-center items-center
         bg-neutral-100 border-r-pink-600 border-t-teal-600 border-b-blue-500 border-l-lime-400
@@ -245,7 +245,7 @@ const Home = () => {
           </div>
           <button
             type="submit"
-            className="w-full h-14 px-5  mt-10 border border-black rounded-md   bg-blue-500 text-white hover:bg-blue-400 active:bg-blue-600 dark:bg-neutral-300 dark:text-black"
+            className="w-full h-14 px-5  mt-10 border border-black rounded-md   bg-blue-500 text-white hover:bg-blue-400 active:bg-blue-600 dark:bg-neutral-300     max-sm:w-[95%] dark:text-black"
           >
             Upload
           </button>
@@ -257,7 +257,9 @@ const Home = () => {
         <div className=" bg-neutral-100 dark:bg-neutral-600 rounded-md p-5 h-full w-full overflow-hidden">
           <div className="flex flex-row items-center justify-between border-b-2 border-gray-400 pb-5">
             <div className="flex flex-row items-center">
-              <div className="mr-5 font-semibold dark:text-white">Links</div>
+              <div className="mr-5 font-semibold dark:text-white max-sm:hidden">
+                Links
+              </div>
               <div className="relative">
                 <div className="absolute right-4 top-3 pointer-events-none">
                   <RiArrowDownSLine
@@ -288,7 +290,7 @@ const Home = () => {
              before:transition-transform before:duration-300 checked:before:translate-x-6"
             />
           </div>
-          <div className="hide-scrollbar my-5 mb-5 overflow-y-auto h-[85%]  pb-[1000px] ">
+          <div className="hide-scrollbar my-5 mb-5 overflow-y-auto h-[85%]  pb-[1000px] max-sm:pb-[350px] ">
             {/*component*/}
             {links.map((e, index) => (
               <div
