@@ -66,6 +66,9 @@ const registerUser = asyncHandler(async (req, res) => {
     user._id
   );
 
+  user.refreshToken = refreshToken;
+  await user.save(); //save refresh token to db
+
   const createdUser = await User.findById(user._id).select(
     "-apiSecret -password"
   );
@@ -116,6 +119,9 @@ const loginUser = asyncHandler(async (req, res) => {
   const { refreshToken, accessToken } = await generateAcessAndRefreshToken(
     foundUser._id
   );
+
+  foundUser.refreshToken = refreshToken;
+  await foundUser.save();
 
   const options = {
     httponly: true,
